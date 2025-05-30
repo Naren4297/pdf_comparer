@@ -38,13 +38,13 @@ Make sure you have the following before running the app:
 ## 🖼️ Screenshots
 
 ### 🔹 Landing Page  
-![Landing Page](image/landingpage.png)
+![Landing Page](images/landingpage.png)
 
 ### 🔹 Compared Result with Table  
-![Compared Result Table](image/compared_result_table.png)
+![Compared Result Table](images/compared_result_table.png)
 
 ### 🔹 Search Results  
-![Search Results](image/search_results.png)
+![Search Results](images/search_results.png)
 
 ### 🔹 Highlighted Changes in PDF  
-![Highlighted PDF Changes](image/changes_highlighted.png)
+![Highlighted PDF Changes](images/changes_highlighted.png)
