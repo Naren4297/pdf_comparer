@@ -1,0 +1,17 @@
+.venv
+/.venv
+venv
+
+.vscode
+/.vscode/*
+/logs
+/static/output/
+
+pdf-diff/.venv
+pdf-diff/.vscode
+pdf-diff/build
+pdf-diff/dist
+pdf-diff/logs
+pdf-diff/pdf_diff_utility.egg-info
+pdf-diff/pdf_diff.egg-info
+*.json

@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>End-to-End PDF Comparison</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+</head>
+<body>
+  <div class="banner">End-to-End PDF Comparison</div>
+
+  <div class="table-header">
+    <button id="refreshBtn"><i class="fas fa-sync-alt"></i></button>
+  </div>
+  
+
+  <div class="container">
+    <label class="upload-box" id="basePdfDropBox">
+      <i class="fas fa-file-pdf"></i>
+      <p>Drop your Base PDF here or click to upload</p>
+      <input type="file" id="basePdfInput" accept="application/pdf" />
+      <div class="file-info" id="basePdfInfo">
+        <span id="basePdfName"></span>
+        <button onclick="removeFile('base')">&times;</button>
+      </div>
+    </label>
+
+    <label class="upload-box" id="updatedPdfDropBox">
+      <i class="fas fa-file-pdf"></i>
+      <p>Drop your Updated PDF here or click to upload</p>
+      <input type="file" id="updatedPdfInput" accept="application/pdf" />
+      <div class="file-info" id="updatedPdfInfo">
+        <span id="updatedPdfName"></span>
+        <button onclick="removeFile('updated')">&times;</button>
+      </div>
+    </label>
+  </div>
+
+  <div class="actions">
+    <button id="compareBtn" disabled onclick="comparePDFs()">Compare PDFs</button>
+    <button id="downloadBtn" disabled onclick="downloadResults()" data-filename="">Download Comparison Results</button>
+    <button id="exportExcelBtn" disabled onclick="exportSelectedToExcel()">Export Selected to Excel</button>
+  </div>
+
+  <div class="overlay" id="spinnerOverlay">
+    <div>
+      <div class="spinner"></div>
+      <button class="cancel-process" onclick="stopComparison()">Stop</button>
+    </div>
+  </div>
+
+<!-- Update the search-wrapper div -->
+<div class="table-controls" style="display:none; text-align:center; margin-top: 3rem;">
+    <div id="countDisplay" style="position: absolute; right: 6rem; margin-top: 3rem; font-weight: bold; font-size: 1rem; display: none;"></div>    
+    <div class="search-wrapper">
+      <i class="fas fa-search search-icon"></i>
+      <input type="text" id="globalSearch" placeholder="Search entire table..." oninput="applyFilters()" class="search-input">
+      <i class="fas fa-times clear-icon" onclick="clearInput('globalSearch')"></i>
+    </div>
+  </div>
+  
+  <div class="table-container" style="display: none; position: relative;">
+  <!-- Update the table headers -->
+  <table id="diffTable">
+    <thead>
+      <tr>
+        <th><input type="checkbox" id="selectAll" onclick="toggleSelectAll(this)"></th>
+        <th>
+          <span>Page Number</span><br>
+          <div class="filter-container">
+            <div class="input-wrapper">
+              <input type="text" class="exclude-filter" id="excludePageNumber" placeholder="Exclude..." oninput="applyFilters()">
+              <i class="fas fa-times clear-icon" onclick="clearInput('excludePageNumber')"></i>
+              <i class="fas fa-plus add-filter" onclick="addExcludeFilter('excludePageNumberContainer', 'excludePageNumber')"></i>
+            </div>
+            <div id="excludePageNumberContainer"></div>
+          </div>
+        </th>
+        <th id="file1Header">
+          <span id="file1Name">File1</span><br>
+          <div class="filter-container">
+            <div class="input-wrapper">
+              <input type="text" class="exclude-filter" id="excludeFile1" placeholder="Exclude..." oninput="applyFilters()">
+              <i class="fas fa-times clear-icon" onclick="clearInput('excludeFile1')"></i>
+              <i class="fas fa-plus add-filter" onclick="addExcludeFilter('excludeFile1Container', 'excludeFile1')"></i>
+            </div>
+            <div id="excludeFile1Container"></div>
+          </div>
+        </th>
+        <th id="file2Header">
+          <span id="file2Name">File2</span><br>
+          <div class="filter-container">
+            <div class="input-wrapper">
+              <input type="text" class="exclude-filter" id="excludeFile2" placeholder="Exclude..." oninput="applyFilters()">
+              <i class="fas fa-times clear-icon" onclick="clearInput('excludeFile2')"></i>
+              <i class="fas fa-plus add-filter" onclick="addExcludeFilter('excludeFile2Container', 'excludeFile2')"></i>
+            </div>
+            <div id="excludeFile2Container"></div>
+          </div>
+        </th> 
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+</div>
+
+<div class="pdf-viewer-container" style="margin-top: 2rem;">
+  <canvas id="pdfCanvas" style="border:1px solid #ccc;"></canvas>
+</div>
+
+
+  <!-- Error Modal -->
+  <div id="errorModal" class="modal hidden">
+    <div class="modal-content">
+      <span class="close-btn" onclick="closeErrorModal()">&times;</span>
+      <h3>Error</h3>
+      <p id="errorMessage">Something went wrong.</p>
+    </div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+  <script src="{{ url_for('static', filename='index.js') }}"></script>
+</body>
+</html>

@@ -1,0 +1,5 @@
+fast-diff-match-patch
+lxml
+pillow
+flask
+werkzeug
