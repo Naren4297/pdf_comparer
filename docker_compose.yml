@@ -1,0 +1,17 @@
+version: "3.9"
+
+services:
+  pdf-comparison-app:
+    build:
+      context: .
+    ports:
+      - "5001:5001"
+    environment:
+      - MAX_MEMORY=4096m
+    deploy:
+      resources:
+        limits:
+          memory: 4096m
+    volumes:
+      - ./static/output:/usr/src/app/static/output
+    restart: unless-stopped
